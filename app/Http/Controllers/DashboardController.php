@@ -37,14 +37,14 @@ class DashboardController extends Controller
         $applicationGrowth = $previousMonthApplications > 0 ? (($currentMonthApplications - $previousMonthApplications) / $previousMonthApplications) * 100 : 0;
 
         // Get recent applications
-        $recentApplications = Application::with(['post', 'user'])
+        $recentApplications = Application::with(['post.company', 'volunteer'])
             ->latest()
             ->take(5)
             ->get()
             ->map(function ($application) {
                 return [
                     'title' => $application->post->title,
-                    'company' => $application->post->company->company_name,
+                    'company' => $application->post->company->name,
                     'status' => $application->status,
                     'time' => Carbon::parse($application->created_at)->diffForHumans()
                 ];
@@ -58,7 +58,7 @@ class DashboardController extends Controller
             ->map(function ($post) {
                 return [
                     'title' => $post->title,
-                    'company' => $post->company->company_name,
+                    'company' => $post->company->name,
                     'applications' => $post->applications->count(),
                     'time' => Carbon::parse($post->created_at)->diffForHumans()
                 ];

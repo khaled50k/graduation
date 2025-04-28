@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme transition handling */
+.theme-transition,
+.theme-transition *,
+.theme-transition *:before,
+.theme-transition *:after {
+    transition: all 200ms ease-in-out !important;
+    transition-delay: 0 !important;
+}
+
+/* Exclude certain elements from transition */
+.theme-transition .transition-none,
+.theme-transition .transition-none *,
+.theme-transition .transition-none *:before,
+.theme-transition .transition-none *:after {
+    transition: none !important;
+}
+
+/* Base theme variables */
+:root {
+    --radius: 0.25rem;
+}
+
+/* Ensure background transitions are smooth */
+body {
+    transition: background-color 200ms ease-in-out;
+}

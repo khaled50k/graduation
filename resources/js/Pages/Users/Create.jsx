@@ -14,7 +14,7 @@ const Create = () => {
         email: '',
         password: '',
         password_confirmation: '',
-        user_type: 'user',
+        user_type: 1,
         national_id: '',
         location: '',
         is_active: true
@@ -117,14 +117,15 @@ const Create = () => {
                                 id="user_type"
                                 label="User Type"
                                 value={data.user_type}
-                                onChange={e => setData('user_type', e.target.value)}
+                                onChange={e => setData('user_type', parseInt(e.target.value))}
                                 error={errors.user_type}
                                 icon={FiShield}
                                 required
                                 className="bg-white dark:bg-gray-800"
                             >
-                                <option value="user">User</option>
-                                <option value="admin">Admin</option>
+                                <option value={1}>Volunteer</option>
+                                <option value={2}>Company</option>
+                                <option value={3}>Admin</option>
                             </SelectInput>
                         </div>
 

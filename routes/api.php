@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\ApplicationController;
 use App\Http\Controllers\Api\VolunteerController;
+use App\Http\Controllers\Api\CompanyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,52 @@ Route::middleware('auth:sanctum')->group(function () {
     // Auth routes
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', [AuthController::class, 'user']);
+
+    // Company Management Routes
+    Route::prefix('company')->middleware('company')->group(function () {
+        // Company Profile
+        Route::get('/profile', [CompanyController::class, 'profile']);
+        Route::put('/profile', [CompanyController::class, 'updateProfile']);
+        
+        // Company Posts
+        Route::get('/posts', [CompanyController::class, 'posts']);
+        Route::post('/posts', [CompanyController::class, 'createPost']);
+        Route::get('/posts/{post}', [CompanyController::class, 'showPost']);
+        Route::put('/posts/{post}', [CompanyController::class, 'updatePost']);
+        Route::delete('/posts/{post}', [CompanyController::class, 'deletePost']);
+        
+        // Company Applications
+        Route::get('/applications', [CompanyController::class, 'applications']);
+        Route::get('/applications/{application}', [CompanyController::class, 'showApplication']);
+        Route::put('/applications/{application}', [CompanyController::class, 'updateApplication']);
+        
+        // Company Statistics
+        Route::get('/statistics', [CompanyController::class, 'statistics']);
+        Route::get('/statistics/posts', [CompanyController::class, 'postStatistics']);
+        Route::get('/statistics/applications', [CompanyController::class, 'applicationStatistics']);
+    });
+
+    // Volunteer Management Routes
+    Route::prefix('volunteer')->middleware('volunteer')->group(function () {
+        // Volunteer Profile
+        Route::get('/profile', [VolunteerController::class, 'profile']);
+        Route::put('/profile', [VolunteerController::class, 'updateProfile']);
+        
+        // Volunteer Applications
+        Route::get('/applications', [VolunteerController::class, 'applications']);
+        Route::post('/applications', [VolunteerController::class, 'createApplication']);
+        Route::get('/applications/{application}', [VolunteerController::class, 'showApplication']);
+        
+        // Volunteer Skills
+        Route::get('/skills', [VolunteerController::class, 'skills']);
+        Route::post('/skills', [VolunteerController::class, 'addSkill']);
+        Route::delete('/skills/{skill}', [VolunteerController::class, 'removeSkill']);
+    });
+
+    // Public Posts
+    Route::get('/posts', [PostController::class, 'index']);
+    Route::get('/posts/{post}', [PostController::class, 'show']);
+    Route::get('/posts/feed', [PostController::class, 'feed']);
 
     // Post routes
     Route::prefix('posts')->group(function () {
@@ -63,6 +110,24 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{volunteer}/experiences', [VolunteerController::class, 'experiences']);
         Route::get('/{volunteer}/educations', [VolunteerController::class, 'educations']);
     });
+
+    // Company routes
+    Route::get('/companies', [CompanyController::class, 'index']);
+    Route::post('/companies', [CompanyController::class, 'store']);
+    Route::get('/companies/{company}', [CompanyController::class, 'show']);
+    Route::put('/companies/{company}', [CompanyController::class, 'update']);
+    Route::delete('/companies/{company}', [CompanyController::class, 'destroy']);
+    
+    // Company Status Management
+    Route::post('/companies/{company}/verify', [CompanyController::class, 'verify']);
+    Route::post('/companies/{company}/unverify', [CompanyController::class, 'unverify']);
+    Route::post('/companies/{company}/activate', [CompanyController::class, 'activate']);
+    Route::post('/companies/{company}/deactivate', [CompanyController::class, 'deactivate']);
+    
+    // Company Related Data
+    Route::get('/companies/{company}/posts', [CompanyController::class, 'posts']);
+    Route::get('/companies/{company}/applications', [CompanyController::class, 'applications']);
+    Route::get('/companies/{company}/statistics', [CompanyController::class, 'statistics']);
 });
 
 
